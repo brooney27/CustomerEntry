@@ -5,33 +5,69 @@ public class CustomerEntry {
 		
 		int custNum;
 		String custName;
-		double salesAmt;
-		String taxCode;
-	
-		Scanner in = new Scanner(System.in);
+		double salesAmt = 0;
+		String taxCode = "";
+		
+		boolean valid = false;
 	
 		//read in parameters
-		System.out.println("Enter customer number: ");
-		custNum = in.nextInt();
-		in.nextLine();
+		while(!valid){
+			System.out.println("Enter customer number: ");
+			try{
+				custNum = getInt();
+				valid = true;
+			}catch(Exception e){
+				System.out.println("Invalid number, try again");
+			}
+		}
+		valid = false;
 		
+		Scanner in = new Scanner(System.in);
 		System.out.println("Enter customer name: ");
-		custName = in.next();
-		in.nextLine();
+		custName = in.nextLine();
+		in.close();
 	
-		System.out.println("Enter Sales Amount: ");
-		salesAmt = in.nextDouble();
-		in.nextLine();
+		while(!valid){
+			System.out.println("Enter sales amount: ");
+			try{
+				salesAmt = getDouble();
+				valid = true;
+			}catch(Exception e){
+				System.out.println("Invalid number, try again");
+			}
+		}
+		valid = false;
 	
 		System.out.println("Enter Tax Code: ");
-		taxCode = in.next();
-		
-		in.close();
-		
+		while(!valid){
+			try{
+				taxCode = getTaxCode();
+				valid = true;
+			}catch (Exception e){
+				System.out.println("Invalid tax code, try again");
+			}
+		}
 		if(taxCode.equals("NRM"))salesAmt = salesAmt * 1.06;
 		else if(taxCode.equals("BIZ"))salesAmt = salesAmt * 1.045;
 		
 		
 		System.out.println("Amount due: " + salesAmt);
+	}
+	
+	public static int getInt() throws Exception{
+		Scanner in = new Scanner(System.in);
+		return in.nextInt();
+	}
+	
+	public static double getDouble() throws Exception{
+		Scanner in = new Scanner(System.in);
+		return in.nextDouble();
+	}
+	
+	public static String getTaxCode() throws Exception{
+		Scanner in = new Scanner(System.in);
+		String code = in.next();
+		if(code.equals("NRM")||code.equals("BIZ")||code.equals("EXE"))return code;
+		throw new Exception();
 	}
 }
